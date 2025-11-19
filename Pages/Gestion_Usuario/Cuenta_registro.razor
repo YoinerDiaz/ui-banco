@@ -1,0 +1,140 @@
+@page "/Cuenta"
+@using System.Net.Http.Json
+@inject HttpClient http
+@using UI.Data.Usuario
+@if (mostrarAlerta)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Cuenta guardada exitosamente!
+    </div>
+}
+<h1>Gestión de Cuenta</h1>
+<div class="accordion" id="accordionEstudiantes">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar cuenta
+            </button>
+        </h2>
+        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <h2 class="text-uppercase text-center mb-5">Registrar Cuenta</h2>
+                <EditForm Model="@cuenta_registro" OnValidSubmit="RegistrarCuenta">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label>Numero:</label>
+                        <InputText @bind-Value="cuenta_registro.numero" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Tipo cuenta:</label>
+                        <InputSelect @bind-Value="cuenta_registro.fk_tipo_cuenta" class="form-control">
+                            <option value="">Seleccione un tipo de cuenta</option>
+                            @foreach (var tc in tipoCuenta)
+                            {
+                                <option value="@tc.id_tipo_cuenta">@tc.tipo_cuenta</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Sucursal:</label>
+                        <InputSelect @bind-Value="cuenta_registro.fk_sucursal" class="form-control">
+                            <option value="">Seleccione una sucursal</option>
+                            @foreach (var sc in sucursalList)
+                            {
+                                <option value="@sc.id_sucursal">@sc.nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Saldo:</label>
+                        <InputNumber @bind-Value="cuenta_registro.saldo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Sobre giro:</label>
+                        <InputNumber @bind-Value="cuenta_registro.sobregiro" class="form-control" />
+                    </div>
+
+                    <div class="form-check">
+                        <InputCheckbox @bind-Value="cuenta_registro.gran_movimiento" class="form-check-input" />
+                        <label class="form-check-label">Gran movimiento</label>
+                    </div>
+
+                    <div class="form-check">
+                        <InputCheckbox @bind-Value="cuenta_registro.sobregiro_no_autorizado" class="form-check-input" />
+                        <label class="form-check-label">Sobre Giro no autorizado</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private Cuenta cuenta_registro = new();
+    private bool mostrarAlerta = false;
+
+    private async Task RegistrarCuenta()
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(
+            "http://localhost:5000/cuenta",
+            cuenta_registro
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                cuenta_registro = new(); // Limpia formulario
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+    private List<Tipo_cuenta> tipoCuenta = new();
+    protected override async Task OnInitializedAsync()
+    {
+        await buscarTipoCuenta();
+        await buscarSucursal();
+    }
+    private async Task buscarTipoCuenta()
+    {
+        try
+        {
+            tipoCuenta = await http.GetFromJsonAsync<List<Tipo_cuenta>>("http://localhost:5000/tipocuenta") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar tipo de cuenta: {e.Message}");
+        }
+    }
+
+    private List<Sucursal> sucursalList = new();
+    private async Task buscarSucursal()
+    {
+        try
+        {
+            sucursalList = await http.GetFromJsonAsync<List<Sucursal>>("http://localhost:5000/sucursal") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar tipo de cuenta: {e.Message}");
+        }
+    }
+}

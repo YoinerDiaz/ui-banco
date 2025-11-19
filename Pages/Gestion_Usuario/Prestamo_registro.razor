@@ -1,0 +1,128 @@
+
+@page "/Prestamo"
+@using System.Net.Http.Json
+@inject HttpClient http
+@using UI.Data.Usuario
+@if (mostrarAlerta)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Prestamo guardado exitosamente!
+    </div>
+}
+<h1>Gestión de Prestamos</h1>
+<div class="accordion" id="accordionEstudiantes">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar Prestamo
+            </button>
+        </h2>
+        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <h2 class="text-uppercase text-center mb-5">Registrar Prestamo</h2>
+                <EditForm Model="@prestamo_registro" OnValidSubmit="RegistrarPrestamo">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label>Cuenta del prestamo:</label>
+                        <InputSelect @bind-Value="prestamo_registro.fk_cuenta_prestamo" class="form-control">
+                            <option value="">Seleccione una cuenta</option>
+                            @foreach (var ct in cuentaList)
+                            {
+                                <option value="@ct.id_cuenta">@ct.numero</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label>Numero:</label>
+                        <InputText @bind-Value="prestamo_registro.numero" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Valor:</label>
+                        <InputNumber @bind-Value="prestamo_registro.valor" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Interes:</label>
+                        <InputNumber @bind-Value="prestamo_registro.interes" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Plazo:</label>
+                        <InputNumber @bind-Value="prestamo_registro.plazo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Saldo:</label>
+                        <InputNumber @bind-Value="prestamo_registro.saldo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Seguro:</label>
+                        <InputNumber @bind-Value="prestamo_registro.seguro" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Cuota:</label>
+                        <InputNumber @bind-Value="prestamo_registro.cuota" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private Prestamo prestamo_registro = new();
+    private bool mostrarAlerta = false;
+
+    private async Task RegistrarPrestamo()
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(
+            "http://localhost:5000/prestamo",
+            prestamo_registro
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                prestamo_registro = new(); // Limpia formulario
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+
+    private List<Cuenta> cuentaList = new();
+    protected override async Task OnInitializedAsync()
+    {
+        await buscarCuenta();
+    }
+    private async Task buscarCuenta()
+    {
+        try
+        {
+            cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar nuemero de cuenta: {e.Message}");
+        }
+    }
+}

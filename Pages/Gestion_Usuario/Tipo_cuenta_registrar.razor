@@ -1,0 +1,69 @@
+@page "/TipoCuenta"
+@using System.Net.Http.Json
+@inject HttpClient http
+@using UI.Data.Usuario
+@if (mostrarAlerta)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Tipo Cuenta guardado exitosamente!
+    </div>
+}
+<h1>Gestión de Tipo Cuenta</h1>
+<div class="accordion" id="accordionEstudiantes">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar Tipo Cuenta
+            </button>
+        </h2>
+        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <h2 class="text-uppercase text-center mb-5">Registrar Tipo Cuenta</h2>
+                <EditForm Model="@tipoCuenta" OnValidSubmit="RegistrarTipoCuenta">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label>Tipo cuenta:</label>
+                        <InputText @bind-Value="tipoCuenta.tipo_cuenta" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private Tipo_cuenta tipoCuenta = new();
+    private bool mostrarAlerta = false;
+
+    private async Task RegistrarTipoCuenta()
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(
+            "http://localhost:5000/tipocuenta",
+            tipoCuenta
+
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                tipoCuenta = new(); // Limpia formulario
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+}

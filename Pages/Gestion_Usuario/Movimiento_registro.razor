@@ -1,0 +1,138 @@
+@page "/Movimiento"
+@using System.Net.Http.Json
+@inject HttpClient http
+@using UI.Data.Usuario
+@if (mostrarAlerta)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Movimiento guardado exitosamente!
+    </div>
+}
+<h1>Gestión de Movimientos</h1>
+<div class="accordion" id="accordionEstudiantes">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar Movimientos
+            </button>
+        </h2>
+        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <h2 class="text-uppercase text-center mb-5">Registrar Movimientos</h2>
+                <EditForm Model="@movimiento_registro" OnValidSubmit="RegistrarMovimiento">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label>cuenta del movimiento:</label>
+                        <InputSelect @bind-Value="movimiento_registro.fk_cuenta_movimiento" class="form-control">
+                            <option value="">Seleccione una cuenta</option>
+                            @foreach (var ct in cuentaList)
+                            {
+                                <option value="@ct.id_cuenta">@ct.numero</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label>sucursal del movimieto:</label>
+                        <InputSelect @bind-Value="movimiento_registro.fk_sucursal_movimiento" class="form-control">
+                            <option value="">Seleccione una sucursal</option>
+                            @foreach (var sc in sucursalList)
+                            {
+                                <option value="@sc.id_sucursal">@sc.nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Valor:</label>
+                        <InputNumber @bind-Value="movimiento_registro.valor" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>tipo de movimiento:</label>
+                        <InputNumber @bind-Value="movimiento_registro.fk_tipo_movimiento" class="form-control" />
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label>Descripcion:</label>
+                        <InputText @bind-Value="movimiento_registro.descripcion" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private Movimiento movimiento_registro = new();
+    private bool mostrarAlerta = false;
+
+    private async Task RegistrarMovimiento()
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(
+            "http://localhost:5000/movimiento",
+            movimiento_registro
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                movimiento_registro = new(); // Limpia formulario
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+
+
+
+
+
+    private List<Cuenta> cuentaList = new();
+    protected override async Task OnInitializedAsync()
+    {
+        await buscarCuenta();
+        await buscarSucursal();
+    }
+    private async Task buscarCuenta()
+    {
+        try
+        {
+            cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar nuemero de cuenta: {e.Message}");
+        }
+    }
+
+    private List<Sucursal> sucursalList = new();
+
+    private async Task buscarSucursal()
+    {
+        try
+        {
+            sucursalList = await http.GetFromJsonAsync<List<Sucursal>>("http://localhost:5000/sucursal") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar la sucursal: {e.Message}");
+        }
+    }
+}

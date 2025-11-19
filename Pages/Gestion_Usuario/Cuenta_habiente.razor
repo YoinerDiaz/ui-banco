@@ -1,0 +1,248 @@
+﻿@page "/Usuario"
+@using System.Net.Http.Json
+@inject HttpClient http
+@using UI.Data.Usuario
+@if (mostrarAlerta)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Usuario guardado exitosamente!
+    </div>
+}
+<h1>Gestión de Usuario</h1>
+<div class="accordion" id="accordionEstudiantes">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar Usuario
+            </button>
+        </h2>
+        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <h2 class="text-uppercase text-center mb-5">Registrar Usuario</h2>
+                <EditForm Model="@cuenta_habiente" OnValidSubmit="RegistrarCuentaHabiente">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label>Nombre:</label>
+                        <InputText @bind-Value="cuenta_habiente.nombre" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Tipo documento:</label>
+                        <InputSelect @bind-Value="cuenta_habiente.fk_tipo_documento" class="form-control">
+                            <option value="">Seleccione un Tipo de Documento</option>
+                            @foreach (var td in tipoDocumento)
+                            {
+                                <option value="@td.id_tipo_documento">@td.sigla</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Documento:</label>
+                        <InputNumber @bind-Value="cuenta_habiente.documento" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Dirección:</label>
+                        <InputText @bind-Value="cuenta_habiente.direccion" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Teléfono:</label>
+                        <InputText @bind-Value="cuenta_habiente.telefono" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Ciudad (ID numérico):</label>
+                        <InputSelect @bind-Value="cuenta_habiente.fk_ciudad" class="form-control">
+                            <option value="">Seleccione una ciudad</option>
+                            @foreach (var cd in ciudadList)
+                            {
+                                <option value="@cd.id_ciudad">@cd.nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Clave:</label>
+                        <InputNumber @bind-Value="cuenta_habiente.clave" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    <table class="table table-borderless table-sm">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tipo de documento</th>
+                <th>documento</th>
+                <th>direccion</th>
+                <th>telefono</th>
+                <th>ciudad</th>
+                <th>clave</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in usuarioList)
+            {
+                if (usuarioEditable != null && usuarioEditable.id_cuenta_habiente == usuario.id_cuenta_habiente)
+                {
+                    <!-- Fila en modo edición -->
+                    <tr>
+                        <td>@usuarioEditable.id_cuenta_habiente</td>
+                        <td><input @bind="usuarioEditable.nombre" /></td>
+                        <td><input @bind="usuarioEditable.fk_tipo_documento" /></td>
+                        <td><input @bind="usuarioEditable.documento" /></td>
+                        <td><input @bind="usuarioEditable.direccion" /></td>
+                        <td><input @bind="usuarioEditable.telefono" /></td>
+                        <td><input @bind="usuarioEditable.fk_ciudad" /></td>
+                        <td><input @bind="usuarioEditable.clave" /></td>
+                        <td>
+                            <button class="btn btn-success btn-sm" @onclick="Guardar">Guardar</button>
+                            <button class="btn btn-secondary btn-sm" @onclick="Cancelar">Cancelar</button>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <!-- Fila normal -->
+                    <tr>
+                        <td>@usuario.id_cuenta_habiente</td>
+                        <td><input  @bind="usuario.nombre" /></td>
+                        <td><input  @bind="usuario.fk_tipo_documento" /></td>
+                        <td><input  @bind="usuario.documento" /></td>
+                        <td><input  @bind="usuario.direccion" /></td>
+                        <td><input  @bind="usuario.telefono" /></td>
+                        <td><input  @bind="usuario.fk_ciudad" /></td>
+                        <td><input  @bind="usuario.clave" /></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" @onclick="() => Editar(usuario)">Editar</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@code {
+    private Usuario cuenta_habiente = new();
+    private bool mostrarAlerta = false;
+
+    private async Task RegistrarCuentaHabiente()
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(
+            "http://localhost:5000/user",
+            cuenta_habiente
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                cuenta_habiente = new(); // Limpia formulario
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+
+
+
+    private List<Tipo_documento> tipoDocumento = new();
+    protected override async Task OnInitializedAsync()
+    {
+        await buscarTipoDocumento();
+        await buscarCiudad();
+        await buscarUsuarios();
+    }
+    private async Task buscarTipoDocumento()
+    {
+        try
+        {
+            tipoDocumento = await http.GetFromJsonAsync<List<Tipo_documento>>("http://localhost:5000/tipodocumento") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar tipo de cuenta: {e.Message}");
+        }
+    }
+
+    private List<Ciudad> ciudadList = new();
+
+    private async Task buscarCiudad()
+    {
+        try
+        {
+            ciudadList = await http.GetFromJsonAsync<List<Ciudad>>("http://localhost:5000/ciudad") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar tipo de ciudad: {e.Message}");
+        }
+    }
+
+    private List<Usuario> usuarioList = new();
+
+    private async Task buscarUsuarios()
+    {
+        try
+        {
+            usuarioList = await http.GetFromJsonAsync<List<Usuario>>("http://localhost:5000/user/all") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar tipo de ciudad: {e.Message}");
+        }
+    }
+
+    Usuario? usuarioEditable;
+
+    void Editar(Usuario u)
+    {
+        // Clonar para no editar directamente hasta guardar
+        usuarioEditable = new Usuario
+        {
+            id_cuenta_habiente = u.id_cuenta_habiente,
+            nombre = u.nombre,
+            fk_tipo_documento = u.fk_tipo_documento,
+            documento = u.documento,
+            direccion = u.direccion,
+            telefono = u.telefono,
+            fk_ciudad = u.fk_ciudad,
+            clave = u.clave
+        };
+    }
+
+    async Task Guardar()
+    {
+        // Petición al backend
+        await http.PutAsJsonAsync($"http://localhost:5000/user/{usuarioEditable.id_cuenta_habiente}", usuarioEditable);
+
+        // Actualizar lista
+        var index = usuarioList.FindIndex(x => x.id_cuenta_habiente == usuarioEditable.id_cuenta_habiente);
+        usuarioList[index] = usuarioEditable;
+
+        usuarioEditable = null;
+    }
+
+    void Cancelar()
+    {
+        usuarioEditable = null;
+    }
+
+}

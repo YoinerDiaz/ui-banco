@@ -1,0 +1,137 @@
+@page "/Sucursal"
+@using System.Net.Http.Json
+@inject HttpClient http
+@using UI.Data.Usuario
+@if (mostrarAlerta)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Sucursal guardada exitosamente!
+    </div>
+}
+<h1>Gestión de sucursales</h1>
+<div class="accordion" id="accordionEstudiantes">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar Sucursal
+            </button>
+        </h2>
+        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <h2 class="text-uppercase text-center mb-5">Registrar Sucursal</h2>
+                <EditForm Model="@sucursal_registro" OnValidSubmit="RegistrarSucursal">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label>Nombre:</label>
+                        <InputText @bind-Value="sucursal_registro.nombre" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Telefono:</label>
+                        <InputText @bind-Value="sucursal_registro.telefono" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Horario:</label>
+                        <InputText @bind-Value="sucursal_registro.horario" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Tipo sucursal:</label>
+                        <InputSelect @bind-Value="sucursal_registro.fk_tbl_tipo_sucursal" class="form-control">
+                            <option value="">Seleccione una ciudad</option>
+                            @foreach (var sl in sucursalList)
+                            {
+                                <option value="@sl.id_tipo_sucursal">@sl.nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Ciudad:</label>
+                        <InputSelect @bind-Value="sucursal_registro.fk_tbl_ciudad" class="form-control">
+                            <option value="">Seleccione una ciudad</option>
+                            @foreach (var cd in ciudadList)
+                            {
+                                <option value="@cd.id_ciudad">@cd.nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Direccion:</label>
+                        <InputText @bind-Value="sucursal_registro.direccion" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private Sucursal sucursal_registro = new();
+    private bool mostrarAlerta = false;
+
+    private async Task RegistrarSucursal()
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync(
+            "http://localhost:5000/sucursal",
+            sucursal_registro
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                sucursal_registro = new(); // Limpia formulario
+            }
+            else
+            {
+                Console.WriteLine($"Error: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Excepción: {ex.Message}");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await buscarCiudad();
+        await buscarTipoSucursal();
+    }
+
+    private List<Ciudad> ciudadList = new();
+
+    private async Task buscarCiudad()
+    {
+        try
+        {
+            ciudadList = await http.GetFromJsonAsync<List<Ciudad>>("http://localhost:5000/ciudad") ?? new();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error al consusultar tipo de ciudad: {e.Message}");
+        }
+    }
+
+    private List<Tipo_sucursal> sucursalList = new();
+
+    private async Task buscarTipoSucursal(){
+        try{
+
+            sucursalList = await http.GetFromJsonAsync<List<Tipo_sucursal>>("http://localhost:5000/tiposucursal") ?? new();
+            
+        }catch(Exception e){
+            Console.WriteLine($"Error al consultar tipo de sucursal: {e.Message}");
+        }
+    }
+}

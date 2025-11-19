@@ -1,0 +1,142 @@
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\appsettings.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.staticwebassets.runtime.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.staticwebassets.endpoints.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.exe
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.deps.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.runtimeconfig.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.dll
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\UI.pdb
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\bin\Debug\net9.0\MudBlazor.dll
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.csproj.AssemblyReference.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.AssemblyInfoInputs.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.AssemblyInfo.cs
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.csproj.CoreCompileInputs.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.RazorAssemblyInfo.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.RazorAssemblyInfo.cs
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\scopedcss\bundle\UI.styles.css
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\scopedcss\projectbundle\UI.bundle.scp.css
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\tzxjg6is5z-l719pty5cb.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\0wz98yz2xy-cfcsbrv665.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\2rxc91cuq6-bpk8xqwxhs.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\2puk7du17f-8inm30yfxf.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\zry82j7rht-cmapd0fi15.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\sfkdtc6fpu-wk8x8xm0ah.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\7g587znl6s-sjnzgf7e1h.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\anqgpl51s3-5bzwdl5l6x.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\bwgyuxq6h9-ey7f0sphx2.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\9u70u3ebro-mb35v9q6en.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\compressed\p9bauy0dku-mb35v9q6en.gz
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.csproj.Up2Date
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.dll
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\refint\UI.dll
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.pdb
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\UI.genruntimeconfig.cache
+C:\Users\dev\source\repos\APIERP\FrontEnd\UI20250922\UI\UI\obj\Debug\net9.0\ref\UI.dll
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\appsettings.Development.json
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\appsettings.json
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.staticwebassets.runtime.json
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.staticwebassets.endpoints.json
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.exe
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.deps.json
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.runtimeconfig.json
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.dll
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\UI.pdb
+C:\proyectos de universidad\UI\ui\bin\Debug\net9.0\MudBlazor.dll
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.csproj.AssemblyReference.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.GeneratedMSBuildEditorConfig.editorconfig
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.AssemblyInfoInputs.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.AssemblyInfo.cs
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.csproj.CoreCompileInputs.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.MvcApplicationPartsAssemblyInfo.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.RazorAssemblyInfo.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.RazorAssemblyInfo.cs
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\scopedcss\bundle\UI.styles.css
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\scopedcss\projectbundle\UI.bundle.scp.css
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\tzxjg6is5z-l719pty5cb.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\0wz98yz2xy-cfcsbrv665.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\2rxc91cuq6-bpk8xqwxhs.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\2puk7du17f-8inm30yfxf.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\zry82j7rht-cmapd0fi15.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\sfkdtc6fpu-wk8x8xm0ah.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\7g587znl6s-sjnzgf7e1h.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\anqgpl51s3-5bzwdl5l6x.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\bwgyuxq6h9-ey7f0sphx2.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\9u70u3ebro-mb35v9q6en.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\compressed\p9bauy0dku-mb35v9q6en.gz
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\staticwebassets.build.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\staticwebassets.development.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.csproj.Up2Date
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.dll
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\refint\UI.dll
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.pdb
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\UI.genruntimeconfig.cache
+C:\proyectos de universidad\UI\ui\obj\Debug\net9.0\ref\UI.dll
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\appsettings.Development.json
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\appsettings.json
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.staticwebassets.endpoints.json
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.staticwebassets.runtime.json
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.exe
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.deps.json
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.runtimeconfig.json
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.dll
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\UI.pdb
+D:\Ingenieria Web\UI banco\bin\Debug\net9.0\MudBlazor.dll
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.csproj.AssemblyReference.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\rpswa.dswa.cache.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.GeneratedMSBuildEditorConfig.editorconfig
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.AssemblyInfoInputs.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.AssemblyInfo.cs
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.csproj.CoreCompileInputs.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.MvcApplicationPartsAssemblyInfo.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.RazorAssemblyInfo.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.RazorAssemblyInfo.cs
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\rjimswa.dswa.cache.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\scopedcss\bundle\UI.styles.css
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\scopedcss\projectbundle\UI.bundle.scp.css
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\tzxjg6is5z-l719pty5cb.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\0wz98yz2xy-cfcsbrv665.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\2rxc91cuq6-bpk8xqwxhs.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\2puk7du17f-8inm30yfxf.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\zry82j7rht-cmapd0fi15.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\sfkdtc6fpu-wk8x8xm0ah.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\7g587znl6s-sjnzgf7e1h.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\anqgpl51s3-5bzwdl5l6x.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\bwgyuxq6h9-ey7f0sphx2.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\9u70u3ebro-mb35v9q6en.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\compressed\p9bauy0dku-mb35v9q6en.gz
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\staticwebassets.build.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\staticwebassets.build.json.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\staticwebassets.development.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.csproj.Up2Date
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.dll
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\refint\UI.dll
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.pdb
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\UI.genruntimeconfig.cache
+D:\Ingenieria Web\UI banco\obj\Debug\net9.0\ref\UI.dll
