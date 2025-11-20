@@ -2,68 +2,137 @@
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
         ¡Tipo Sucursal guardado exitosamente!
     </div>
 }
+
 <h1>Gestión de Tipo Sucursal</h1>
+
 <div class="accordion" id="accordionEstudiantes">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Tipo Sucursal
+                    data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar / Editar Tipo Sucursal
             </button>
         </h2>
+
         <div id="collapseEstudiante" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Tipo Sucursal</h2>
-                <EditForm Model="@tipoSucursal" OnValidSubmit="RegistrarTipoSucursal">
+
+                <h2 class="text-uppercase text-center mb-5">
+                    @(tipoSucursal.id_tipo_sucursal == null ? "Registrar Tipo Sucursal" : "Editar Tipo Sucursal")
+                </h2>
+
+                <EditForm Model="@tipoSucursal" OnValidSubmit="GuardarTipoSucursal">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
+
+                    <input hidden @bind="tipoSucursal.id_tipo_sucursal" />
 
                     <div class="mb-3">
                         <label>Nombre:</label>
                         <InputText @bind-Value="tipoSucursal.nombre" class="form-control" />
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">
+                        @(tipoSucursal.id_tipo_sucursal == null ? "Guardar" : "Actualizar")
+                    </button>
                 </EditForm>
+
             </div>
         </div>
     </div>
 </div>
 
+<hr />
+
+<h3 class="mt-4">Lista de Tipos de Sucursal</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var ts in listaSucursales)
+        {
+            <tr>
+                <td>@ts.id_tipo_sucursal</td>
+                <td>@ts.nombre</td>
+                <td>
+                    <button class="btn btn-warning" @onclick="(() => EditarTipo(ts))">Editar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
+
     private Tipo_sucursal tipoSucursal = new();
+    private List<Tipo_sucursal> listaSucursales = new();
     private bool mostrarAlerta = false;
 
-    private async Task RegistrarTipoSucursal()
+    protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/tiposucursal",
-            tipoSucursal
+        await CargarLista();
+    }
 
+    private async Task CargarLista()
+    {
+        listaSucursales =
+            await http.GetFromJsonAsync<List<Tipo_sucursal>>("http://localhost:5000/tiposucursal")
+            ?? new();
+    }
+
+    private async Task GuardarTipoSucursal()
+    {
+        HttpResponseMessage response;
+
+        if (tipoSucursal.id_tipo_sucursal == null)
+        {
+            // Crear
+            response = await http.PostAsJsonAsync(
+                "http://localhost:5000/tiposucursal",
+                tipoSucursal
             );
-
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                tipoSucursal = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"Excepción: {ex.Message}");
+            // Editar
+            response = await http.PutAsJsonAsync(
+                "http://localhost:5000/tiposucursal",
+                tipoSucursal
+            );
         }
+
+        if (response.IsSuccessStatusCode)
+        {
+            mostrarAlerta = true;
+            tipoSucursal = new();
+            await CargarLista();
+        }
+        else
+        {
+            Console.WriteLine("Error al guardar o actualizar.");
+        }
+    }
+
+    private void EditarTipo(Tipo_sucursal ts)
+    {
+        tipoSucursal = new Tipo_sucursal
+        {
+            id_tipo_sucursal = ts.id_tipo_sucursal,
+            nombre = ts.nombre
+        };
     }
 }

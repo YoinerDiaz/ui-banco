@@ -2,72 +2,130 @@
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
-        ¡Ciudad guardado exitosamente!
+        ¡Ciudad guardada exitosamente!
     </div>
 }
-<h1>Gestión de Ciudad</h1>
-<div class="accordion" id="accordionEstudiantes">
+
+<h1>Gestión de Ciudades</h1>
+
+<div class="accordion" id="accordionCiudad">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Ciudad
+                    data-bs-target="#collapseCiudad" aria-expanded="true">
+                Registrar / Editar Ciudad
             </button>
         </h2>
-        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+
+        <div id="collapseCiudad" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Ciudad</h2>
-                <EditForm Model="@ciudad" OnValidSubmit="RegistrarCiudad">
+
+                <h2 class="text-uppercase text-center mb-4">
+                    @(ciudad.id_ciudad == null ? "Registrar Ciudad" : "Editar Ciudad")
+                </h2>
+
+                <EditForm Model="@ciudad" OnValidSubmit="GuardarCiudad">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
+                    <input hidden @bind="ciudad.id_ciudad" />
+
                     <div class="mb-3">
-                        <label>Nombre:</label>
+                        <label>Nombre Ciudad:</label>
                         <InputText @bind-Value="ciudad.nombre" class="form-control" />
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">
+                        @(ciudad.id_ciudad == null ? "Guardar" : "Actualizar")
+                    </button>
                 </EditForm>
+
             </div>
         </div>
     </div>
 </div>
 
+<hr />
+
+<h3 class="mt-4">Lista de Ciudades</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ciudad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var c in listaCiudades)
+        {
+            <tr>
+                <td>@c.id_ciudad</td>
+                <td>@c.nombre</td>
+                <td>
+                    <button class="btn btn-warning" @onclick="(() => EditarCiudad(c))">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
+
     private Ciudad ciudad = new();
+    private List<Ciudad> listaCiudades = new();
     private bool mostrarAlerta = false;
 
-    private async Task RegistrarCiudad()
+    protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/ciudad",
-            ciudad
-
-            );
-
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                ciudad = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Excepción: {ex.Message}");
-        }
-
+        await CargarCiudades();
     }
 
+    private async Task CargarCiudades()
+    {
+        listaCiudades = await http.GetFromJsonAsync<List<Ciudad>>(
+            "http://localhost:5000/ciudad"
+        ) ?? new();
+    }
+
+    private async Task GuardarCiudad()
+    {
+        HttpResponseMessage response;
+
+        if (ciudad.id_ciudad == null)
+        {
+            // Registrar
+            response = await http.PostAsJsonAsync("http://localhost:5000/ciudad", ciudad);
+        }
+        else
+        {
+            // Editar
+            response = await http.PutAsJsonAsync("http://localhost:5000/ciudad", ciudad);
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            mostrarAlerta = true;
+
+            ciudad = new(); // limpiar formulario
+            await CargarCiudades(); // refrescar tabla
+        }
+    }
+
+    private void EditarCiudad(Ciudad c)
+    {
+        ciudad = new Ciudad
+        {
+            id_ciudad = c.id_ciudad,
+            nombre = c.nombre
+        };
+    }
 }
-
-

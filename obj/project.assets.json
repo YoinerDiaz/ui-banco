@@ -660,24 +660,31 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\yoine\\.nuget\\packages\\": {}
+    "C:\\Users\\seste\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Ingenieria Web\\UI banco\\UI.csproj",
+      "projectUniqueName": "C:\\Programacion\\ProyectosPOLI\\ingenieria web\\uiBanco\\UI.csproj",
       "projectName": "UI",
-      "projectPath": "D:\\Ingenieria Web\\UI banco\\UI.csproj",
-      "packagesPath": "C:\\Users\\yoine\\.nuget\\packages\\",
-      "outputPath": "D:\\Ingenieria Web\\UI banco\\obj\\",
+      "projectPath": "C:\\Programacion\\ProyectosPOLI\\ingenieria web\\uiBanco\\UI.csproj",
+      "packagesPath": "C:\\Users\\seste\\.nuget\\packages\\",
+      "outputPath": "C:\\Programacion\\ProyectosPOLI\\ingenieria web\\uiBanco\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\yoine\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\seste\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

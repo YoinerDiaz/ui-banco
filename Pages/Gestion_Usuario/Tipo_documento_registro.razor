@@ -2,76 +2,164 @@
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
         ¡Tipo Documento guardado exitosamente!
     </div>
 }
+
 <h1>Gestión de Documentos</h1>
+
 <div class="accordion" id="accordionEstudiantes">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Tipo documento
+                    data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar / Editar Tipo documento
             </button>
         </h2>
+
         <div id="collapseEstudiante" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Tipo documento</h2>
-                <EditForm Model="@tipoDocumento" OnValidSubmit="RegistrarTipoDocumento">
+
+                <h2 class="text-uppercase text-center mb-5">
+                    @(tipoDocumento.id_tipo_documento == null ? "Registrar Tipo Documento" : "Editar Tipo Documento")
+                </h2>
+
+                <EditForm Model="@tipoDocumento" OnValidSubmit="GuardarTipoDocumento">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
+                    <input hidden @bind="tipoDocumento.id_tipo_documento" />
+
+                    <!-- TIPO DE DOCUMENTO -->
                     <div class="mb-3">
                         <label>Tipo de documento:</label>
-                        <InputText @bind-Value="tipoDocumento.tipo_documento" class="form-control" />
+
+                        <InputSelect @bind-Value="tipoDocumento.tipo_documento"
+                                     class="form-control">
+                            <option value="">Seleccione un tipo</option>
+                            @foreach (var item in listaPredefinida)
+                            {
+                                <option value="@item.Tipo">@item.Tipo</option>
+                            }
+                        </InputSelect>
                     </div>
 
-
+                    <!-- SIGLA MANUAL -->
                     <div class="mb-3">
                         <label>Sigla:</label>
-                        <InputText @bind-Value="tipoDocumento.sigla" class="form-control" />
+                        <InputText @bind-Value="tipoDocumento.sigla"
+                                   class="form-control" />
                     </div>
 
-
-
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">
+                        @(tipoDocumento.id_tipo_documento == null ? "Guardar" : "Actualizar")
+                    </button>
                 </EditForm>
             </div>
         </div>
     </div>
 </div>
 
+<hr />
+
+<h3 class="mt-4">Lista de Tipos de Documento</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo Documento</th>
+            <th>Sigla</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var td in listaDocumentos)
+        {
+            <tr>
+                <td>@td.id_tipo_documento</td>
+                <td>@td.tipo_documento</td>
+                <td>@td.sigla</td>
+                <td>
+                    <button class="btn btn-warning" @onclick="(() => EditarTipo(td))">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
+
     private Tipo_documento tipoDocumento = new();
+    private List<Tipo_documento> listaDocumentos = new();
     private bool mostrarAlerta = false;
 
-    private async Task RegistrarTipoDocumento()
+    // SOLO TIPOS, sin siglas automáticas
+    private List<(string Tipo, string Sigla)> listaPredefinida = new()
     {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/tipodocumento",
-            tipoDocumento
+        ("Cédula de ciudadanía", "CC"),
+        ("Tarjeta de identidad", "TI"),
+        ("Cédula de extranjería", "CE"),
+        ("Pasaporte", "PA"),
+        ("NIT", "NIT"),
+        ("Registro civil", "RC")
+    };
 
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarLista();
+    }
+
+    private async Task CargarLista()
+    {
+        listaDocumentos =
+            await http.GetFromJsonAsync<List<Tipo_documento>>("http://localhost:5000/tipodocumento")
+            ?? new();
+    }
+
+    // Guardar o actualizar
+    private async Task GuardarTipoDocumento()
+    {
+        HttpResponseMessage response;
+
+        if (tipoDocumento.id_tipo_documento == null)
+        {
+            response = await http.PostAsJsonAsync(
+                "http://localhost:5000/tipodocumento",
+                tipoDocumento
             );
-
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                tipoDocumento = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"Excepción: {ex.Message}");
+            response = await http.PutAsJsonAsync(
+                "http://localhost:5000/tipodocumento",
+                tipoDocumento
+            );
         }
+
+        if (response.IsSuccessStatusCode)
+        {
+            mostrarAlerta = true;
+            tipoDocumento = new();
+            await CargarLista();
+        }
+    }
+
+    // Botón Editar
+    private void EditarTipo(Tipo_documento td)
+    {
+        tipoDocumento = new Tipo_documento
+        {
+            id_tipo_documento = td.id_tipo_documento,
+            tipo_documento = td.tipo_documento,
+            sigla = td.sigla
+        };
     }
 }

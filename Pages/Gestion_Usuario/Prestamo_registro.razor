@@ -1,128 +1,152 @@
-
 @page "/Prestamo"
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
-        ¡Prestamo guardado exitosamente!
+        ¡Acción realizada correctamente!
     </div>
 }
+
 <h1>Gestión de Prestamos</h1>
-<div class="accordion" id="accordionEstudiantes">
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Prestamo
-            </button>
-        </h2>
-        <div id="collapseEstudiante" class="accordion-collapse collapse show">
-            <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Prestamo</h2>
-                <EditForm Model="@prestamo_registro" OnValidSubmit="RegistrarPrestamo">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
 
-                    <div class="mb-3">
-                        <label>Cuenta del prestamo:</label>
-                        <InputSelect @bind-Value="prestamo_registro.fk_cuenta_prestamo" class="form-control">
-                            <option value="">Seleccione una cuenta</option>
-                            @foreach (var ct in cuentaList)
-                            {
-                                <option value="@ct.id_cuenta">@ct.numero</option>
-                            }
-                        </InputSelect>
-                    </div>
+<!-- FORMULARIO REGISTRO O EDICIÓN -->
+<div class="card p-4 mb-4">
+    <h3>@(prestamo_registro.id_prestamo == null ? "Registrar Prestamo" : "Editar Prestamo")</h3>
 
+    <EditForm Model="@prestamo_registro" OnValidSubmit="GuardarPrestamo">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-                    <div class="mb-3">
-                        <label>Numero:</label>
-                        <InputText @bind-Value="prestamo_registro.numero" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Valor:</label>
-                        <InputNumber @bind-Value="prestamo_registro.valor" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Interes:</label>
-                        <InputNumber @bind-Value="prestamo_registro.interes" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Plazo:</label>
-                        <InputNumber @bind-Value="prestamo_registro.plazo" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Saldo:</label>
-                        <InputNumber @bind-Value="prestamo_registro.saldo" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Seguro:</label>
-                        <InputNumber @bind-Value="prestamo_registro.seguro" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Cuota:</label>
-                        <InputNumber @bind-Value="prestamo_registro.cuota" class="form-control" />
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </EditForm>
-            </div>
+        <div class="mb-3">
+            <label>Cuenta del prestamo:</label>
+            <InputSelect @bind-Value="prestamo_registro.fk_cuenta_prestamo" class="form-control">
+                <option value="">Seleccione una cuenta</option>
+                @foreach (var ct in cuentaList)
+                {
+                    <option value="@ct.id_cuenta">@ct.numero</option>
+                }
+            </InputSelect>
         </div>
-    </div>
+
+        <div class="mb-3"><label>Numero:</label><InputText @bind-Value="prestamo_registro.numero" class="form-control" /></div>
+        <div class="mb-3"><label>Valor:</label><InputNumber @bind-Value="prestamo_registro.valor" class="form-control" /></div>
+        <div class="mb-3"><label>Interes:</label><InputNumber @bind-Value="prestamo_registro.interes" class="form-control" /></div>
+        <div class="mb-3"><label>Plazo:</label><InputNumber @bind-Value="prestamo_registro.plazo" class="form-control" /></div>
+        <div class="mb-3"><label>Saldo:</label><InputNumber @bind-Value="prestamo_registro.saldo" class="form-control" /></div>
+        <div class="mb-3"><label>Seguro:</label><InputNumber @bind-Value="prestamo_registro.seguro" class="form-control" /></div>
+        <div class="mb-3"><label>Cuota:</label><InputNumber @bind-Value="prestamo_registro.cuota" class="form-control" /></div>
+
+        <button type="submit" class="btn btn-primary">
+            @(prestamo_registro.id_prestamo == null ? "Guardar" : "Actualizar")
+        </button>
+
+        @if (prestamo_registro.id_prestamo != null)
+        {
+            <button class="btn btn-secondary ms-2" @onclick="CancelarEdicion">Cancelar</button>
+        }
+    </EditForm>
 </div>
 
+<!-- TABLA DE PRÉSTAMOS -->
+<h3>Lista de Prestamos</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cuenta</th>
+            <th>Número</th>
+            <th>Valor</th>
+            <th>Interés</th>
+            <th>Plazo</th>
+            <th>Saldo</th>
+            <th>Seguro</th>
+            <th>Cuota</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var p in prestamoList)
+        {
+            <tr>
+                <td>@p.id_prestamo</td>
+                <td>@p.fk_cuenta_prestamo</td>
+                <td>@p.numero</td>
+                <td>@p.valor</td>
+                <td>@p.interes</td>
+                <td>@p.plazo</td>
+                <td>@p.saldo</td>
+                <td>@p.seguro</td>
+                <td>@p.cuota</td>
+
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="(() => EditarPrestamo(p))">Editar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
     private Prestamo prestamo_registro = new();
+    private List<Prestamo> prestamoList = new();
+    private List<Cuenta> cuentaList = new();
     private bool mostrarAlerta = false;
 
-    private async Task RegistrarPrestamo()
-    {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/prestamo",
-            prestamo_registro
-            );
-
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                prestamo_registro = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Excepción: {ex.Message}");
-        }
-    }
-
-    private List<Cuenta> cuentaList = new();
     protected override async Task OnInitializedAsync()
     {
+        await buscarPrestamos();
         await buscarCuenta();
     }
+
+    private async Task buscarPrestamos()
+    {
+        prestamoList = await http.GetFromJsonAsync<List<Prestamo>>("http://localhost:5000/prestamo") ?? new();
+    }
+
     private async Task buscarCuenta()
     {
-        try
+        cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
+    }
+
+    private async Task GuardarPrestamo()
+    {
+        HttpResponseMessage response;
+
+        if (prestamo_registro.id_prestamo == null)
+            response = await http.PostAsJsonAsync("http://localhost:5000/prestamo", prestamo_registro);
+        else
+            response = await http.PutAsJsonAsync("http://localhost:5000/prestamo", prestamo_registro);
+
+        if (response.IsSuccessStatusCode)
         {
-            cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
+            mostrarAlerta = true;
+            await buscarPrestamos();
+            prestamo_registro = new();
         }
-        catch (Exception e)
+    }
+
+    private void EditarPrestamo(Prestamo p)
+    {
+        prestamo_registro = new Prestamo
         {
-            Console.WriteLine($"Error al consusultar nuemero de cuenta: {e.Message}");
-        }
+            id_prestamo = p.id_prestamo,
+            fk_cuenta_prestamo = p.fk_cuenta_prestamo,
+            numero = p.numero,
+            valor = p.valor,
+            interes = p.interes,
+            plazo = p.plazo,
+            saldo = p.saldo,
+            seguro = p.seguro,
+            cuota = p.cuota
+        };
+    }
+
+    private void CancelarEdicion()
+    {
+        prestamo_registro = new();
     }
 }

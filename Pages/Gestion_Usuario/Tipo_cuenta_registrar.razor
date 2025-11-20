@@ -2,68 +2,128 @@
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
         ¡Tipo Cuenta guardado exitosamente!
     </div>
 }
+
 <h1>Gestión de Tipo Cuenta</h1>
+
 <div class="accordion" id="accordionEstudiantes">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Tipo Cuenta
+                    data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar / Editar Tipo Cuenta
             </button>
         </h2>
+
         <div id="collapseEstudiante" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Tipo Cuenta</h2>
-                <EditForm Model="@tipoCuenta" OnValidSubmit="RegistrarTipoCuenta">
+
+                <h2 class="text-uppercase text-center mb-5">
+                    @(tipoCuenta.id_tipo_cuenta == null ? "Registrar Tipo Cuenta" : "Editar Tipo Cuenta")
+                </h2>
+
+                <EditForm Model="@tipoCuenta" OnValidSubmit="GuardarTipoCuenta">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
+
+                    <input hidden @bind="tipoCuenta.id_tipo_cuenta" />
 
                     <div class="mb-3">
                         <label>Tipo cuenta:</label>
                         <InputText @bind-Value="tipoCuenta.tipo_cuenta" class="form-control" />
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary">
+                        @(tipoCuenta.id_tipo_cuenta == null ? "Guardar" : "Actualizar")
+                    </button>
                 </EditForm>
+
             </div>
         </div>
     </div>
 </div>
 
+<hr />
+
+<h3 class="mt-4">Lista de Tipos de Cuenta</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo Cuenta</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var tc in listaCuentas)
+        {
+            <tr>
+                <td>@tc.id_tipo_cuenta</td>
+                <td>@tc.tipo_cuenta</td>
+                <td>
+                    <button class="btn btn-warning" @onclick="(() => EditarTipo(tc))">Editar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
     private Tipo_cuenta tipoCuenta = new();
+    private List<Tipo_cuenta> listaCuentas = new();
     private bool mostrarAlerta = false;
 
-    private async Task RegistrarTipoCuenta()
+    protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/tipocuenta",
-            tipoCuenta
+        await CargarLista();
+    }
 
-            );
+    private async Task CargarLista()
+    {
+        listaCuentas = await http.GetFromJsonAsync<List<Tipo_cuenta>>("http://localhost:5000/tipocuenta") ?? new();
+    }
 
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                tipoCuenta = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
-        }
-        catch (Exception ex)
+    private async Task GuardarTipoCuenta()
+    {
+        HttpResponseMessage response;
+
+        if (tipoCuenta.id_tipo_cuenta == null)
         {
-            Console.WriteLine($"Excepción: {ex.Message}");
+            // Crear
+            response = await http.PostAsJsonAsync("http://localhost:5000/tipocuenta", tipoCuenta);
         }
+        else
+        {
+            // Editar
+            response = await http.PutAsJsonAsync("http://localhost:5000/tipocuenta", tipoCuenta);
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            mostrarAlerta = true;
+            tipoCuenta = new();
+            await CargarLista();
+        }
+        else
+        {
+            Console.WriteLine("Error al guardar o actualizar.");
+        }
+    }
+
+    private void EditarTipo(Tipo_cuenta tc)
+    {
+        tipoCuenta = new Tipo_cuenta
+        {
+            id_tipo_cuenta = tc.id_tipo_cuenta,
+            tipo_cuenta = tc.tipo_cuenta
+        };
     }
 }

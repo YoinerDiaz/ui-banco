@@ -2,25 +2,33 @@
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
         ¡Cuenta guardada exitosamente!
     </div>
 }
+
 <h1>Gestión de Cuenta</h1>
+
 <div class="accordion" id="accordionEstudiantes">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar cuenta
+                    data-bs-target="#collapseEstudiante" aria-expanded="true">
+                Registrar / Editar Cuenta
             </button>
         </h2>
+
         <div id="collapseEstudiante" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Cuenta</h2>
-                <EditForm Model="@cuenta_registro" OnValidSubmit="RegistrarCuenta">
+
+                <h2 class="text-uppercase text-center mb-4">
+                    @(cuenta_registro.id_cuenta == null ? "Registrar Cuenta" : "Editar Cuenta")
+                </h2>
+
+                <EditForm Model="@cuenta_registro" OnValidSubmit="GuardarCuenta">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
@@ -71,70 +79,131 @@
                         <label class="form-check-label">Sobre Giro no autorizado</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        @(cuenta_registro.id_cuenta == null ? "Guardar" : "Actualizar")
+                    </button>
+
+                    @if (cuenta_registro.id_cuenta != null)
+                    {
+                        <button type="button" class="btn btn-secondary mt-3 ms-2" @onclick="CancelarEdicion">
+                            Cancelar
+                        </button>
+                    }
                 </EditForm>
+
             </div>
         </div>
     </div>
 </div>
 
+<hr />
+
+<h2 class="mt-4">Lista de cuentas registradas</h2>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Número</th>
+            <th>Saldo</th>
+            <th>Sucursal</th>
+            <th>Tipo cuenta</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in listaCuentas)
+        {
+            <tr>
+                <td>@c.id_cuenta</td>
+                <td>@c.numero</td>
+                <td>@c.saldo</td>
+                <td>@c.fk_sucursal</td>
+                <td>@c.fk_tipo_cuenta</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" 
+                            @onclick="(() => EditarCuenta(c.id_cuenta))">
+                        Editar
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
+
     private Cuenta cuenta_registro = new();
+    private List<Cuenta> listaCuentas = new();
+    private List<Tipo_cuenta> tipoCuenta = new();
+    private List<Sucursal> sucursalList = new();
+
     private bool mostrarAlerta = false;
 
-    private async Task RegistrarCuenta()
-    {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/cuenta",
-            cuenta_registro
-            );
-
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                cuenta_registro = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Excepción: {ex.Message}");
-        }
-    }
-    private List<Tipo_cuenta> tipoCuenta = new();
     protected override async Task OnInitializedAsync()
     {
         await buscarTipoCuenta();
         await buscarSucursal();
+        await cargarCuentas();
     }
-    private async Task buscarTipoCuenta()
+
+    private async Task cargarCuentas()
+    {
+        listaCuentas = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta/all")
+                       ?? new();
+    }
+
+    private async Task GuardarCuenta()
     {
         try
         {
-            tipoCuenta = await http.GetFromJsonAsync<List<Tipo_cuenta>>("http://localhost:5000/tipocuenta") ?? new();
+            HttpResponseMessage response;
+
+            if (cuenta_registro.id_cuenta == null)
+            {
+                response = await http.PostAsJsonAsync("http://localhost:5000/cuenta", cuenta_registro);
+            }
+            else
+            {
+                response = await http.PutAsJsonAsync(
+                    $"http://localhost:5000/cuenta/{cuenta_registro.id_cuenta}", 
+                    cuenta_registro
+                );
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                mostrarAlerta = true;
+                cuenta_registro = new();
+                await cargarCuentas();
+            }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine($"Error al consusultar tipo de cuenta: {e.Message}");
+            Console.WriteLine($"Error: {ex.Message}");
         }
     }
 
-    private List<Sucursal> sucursalList = new();
+    private async Task EditarCuenta(int? id)
+    {
+        if (id == null) return;
+
+        var cuenta = await http.GetFromJsonAsync<Cuenta>($"http://localhost:5000/cuenta/{id}");
+        cuenta_registro = cuenta ?? new();
+    }
+
+    private void CancelarEdicion()
+    {
+        cuenta_registro = new();
+    }
+
+    private async Task buscarTipoCuenta()
+    {
+        tipoCuenta = await http.GetFromJsonAsync<List<Tipo_cuenta>>("http://localhost:5000/tipocuenta") ?? new();
+    }
+
     private async Task buscarSucursal()
     {
-        try
-        {
-            sucursalList = await http.GetFromJsonAsync<List<Sucursal>>("http://localhost:5000/sucursal") ?? new();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error al consusultar tipo de cuenta: {e.Message}");
-        }
+        sucursalList = await http.GetFromJsonAsync<List<Sucursal>>("http://localhost:5000/sucursal") ?? new();
     }
 }

@@ -2,30 +2,34 @@
 @using System.Net.Http.Json
 @inject HttpClient http
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
-        ¡Movimiento guardado exitosamente!
+        ¡Operación realizada exitosamente!
     </div>
 }
+
 <h1>Gestión de Movimientos</h1>
-<div class="accordion" id="accordionEstudiantes">
+
+<!-- FORMULARIO PARA REGISTRAR / EDITAR -->
+<div class="accordion mb-4" id="accordionMovimientos">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Movimientos
+                    data-bs-target="#collapseMovimiento" aria-expanded="true">
+                Registrar / Editar Movimiento
             </button>
         </h2>
-        <div id="collapseEstudiante" class="accordion-collapse collapse show">
+
+        <div id="collapseMovimiento" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Movimientos</h2>
-                <EditForm Model="@movimiento_registro" OnValidSubmit="RegistrarMovimiento">
+                <EditForm Model="@movimiento_registro" OnValidSubmit="@GuardarOActualizar">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
                     <div class="mb-3">
-                        <label>cuenta del movimiento:</label>
+                        <label>Cuenta:</label>
                         <InputSelect @bind-Value="movimiento_registro.fk_cuenta_movimiento" class="form-control">
                             <option value="">Seleccione una cuenta</option>
                             @foreach (var ct in cuentaList)
@@ -35,9 +39,8 @@
                         </InputSelect>
                     </div>
 
-
                     <div class="mb-3">
-                        <label>sucursal del movimieto:</label>
+                        <label>Sucursal:</label>
                         <InputSelect @bind-Value="movimiento_registro.fk_sucursal_movimiento" class="form-control">
                             <option value="">Seleccione una sucursal</option>
                             @foreach (var sc in sucursalList)
@@ -53,86 +56,127 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>tipo de movimiento:</label>
-                        <InputNumber @bind-Value="movimiento_registro.fk_tipo_movimiento" class="form-control" />
+                        <label>Tipo de movimiento:</label>
+                        <InputSelect @bind-Value="movimiento_registro.fk_tipo_movimiento" class="form-control">
+                            <option value="">Seleccione un tipo</option>
+                            @foreach (var tm in tipoMovimientoList)
+                            {
+                                <option value="@tm.id_tipo_movimiento">@tm.tipo_movimiento</option>
+                            }
+                        </InputSelect>
                     </div>
 
-
                     <div class="mb-3">
-                        <label>Descripcion:</label>
+                        <label>Descripción:</label>
                         <InputText @bind-Value="movimiento_registro.descripcion" class="form-control" />
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn @(editando ? "btn-warning" : "btn-primary")">
+                        @(editando ? "Actualizar" : "Guardar")
+                    </button>
                 </EditForm>
             </div>
         </div>
     </div>
 </div>
 
+<!-- TABLA DE MOVIMIENTOS -->
+<h2>Listado de Movimientos</h2>
+<table class="table table-striped table- mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cuenta</th>
+            <th>Sucursal</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in movimientos)
+        {
+            <tr>
+                <td>@m.id_movimiento</td>
+                <td>@(cuentaList.FirstOrDefault(c => c.id_cuenta == m.fk_cuenta_movimiento)?.numero ?? m.fk_cuenta_movimiento.ToString())</td>
+                <td>@(sucursalList.FirstOrDefault(s => s.id_sucursal == m.fk_sucursal_movimiento)?.nombre ?? m.fk_sucursal_movimiento.ToString())</td>
+                <td>@(tipoMovimientoList.FirstOrDefault(t => t.id_tipo_movimiento == m.fk_tipo_movimiento)?.tipo_movimiento ?? m.fk_tipo_movimiento.ToString())</td>
+                <td>@m.valor</td>
+                <td>@m.descripcion</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="() => Editar(m)">Editar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
     private Movimiento movimiento_registro = new();
+    private List<Movimiento> movimientos = new();
+
+    private List<Cuenta> cuentaList = new();
+    private List<Sucursal> sucursalList = new();
+    private List<Tipo_movimiento> tipoMovimientoList = new();
+
     private bool mostrarAlerta = false;
+    private bool editando = false;
 
-    private async Task RegistrarMovimiento()
+    protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/movimiento",
-            movimiento_registro
-            );
+        await CargarDatos();
+        await CargarMovimientos();
+    }
 
+    private async Task CargarDatos()
+    {
+        cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
+        sucursalList = await http.GetFromJsonAsync<List<Sucursal>>("http://localhost:5000/sucursal") ?? new();
+        tipoMovimientoList = await http.GetFromJsonAsync<List<Tipo_movimiento>>("http://localhost:5000/tipomovimiento") ?? new();
+    }
+
+    private async Task CargarMovimientos()
+    {
+        movimientos = await http.GetFromJsonAsync<List<Movimiento>>("http://localhost:5000/movimiento/all") ?? new();
+    }
+
+    private async Task GuardarOActualizar()
+    {
+        if (!editando)
+        {
+            var response = await http.PostAsJsonAsync("http://localhost:5000/movimiento", movimiento_registro);
             if (response.IsSuccessStatusCode)
             {
                 mostrarAlerta = true;
-                movimiento_registro = new(); // Limpia formulario
+                movimiento_registro = new Movimiento();
+                await CargarMovimientos();
             }
-            else
+        }
+        else
+        {
+            var response = await http.PutAsJsonAsync($"http://localhost:5000/movimiento/{movimiento_registro.id_movimiento}", movimiento_registro);
+            if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Error: {response.StatusCode}");
+                mostrarAlerta = true;
+                editando = false;
+                movimiento_registro = new Movimiento();
+                await CargarMovimientos();
             }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Excepción: {ex.Message}");
-        }
     }
 
-
-
-
-
-    private List<Cuenta> cuentaList = new();
-    protected override async Task OnInitializedAsync()
+    private void Editar(Movimiento m)
     {
-        await buscarCuenta();
-        await buscarSucursal();
-    }
-    private async Task buscarCuenta()
-    {
-        try
+        movimiento_registro = new Movimiento
         {
-            cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error al consusultar nuemero de cuenta: {e.Message}");
-        }
-    }
-
-    private List<Sucursal> sucursalList = new();
-
-    private async Task buscarSucursal()
-    {
-        try
-        {
-            sucursalList = await http.GetFromJsonAsync<List<Sucursal>>("http://localhost:5000/sucursal") ?? new();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error al consusultar la sucursal: {e.Message}");
-        }
+            id_movimiento = m.id_movimiento,
+            fk_cuenta_movimiento = m.fk_cuenta_movimiento,
+            fk_sucursal_movimiento = m.fk_sucursal_movimiento,
+            fk_tipo_movimiento = m.fk_tipo_movimiento,
+            valor = m.valor,
+            descripcion = m.descripcion
+        };
+        editando = true;
     }
 }

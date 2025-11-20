@@ -9,89 +9,89 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = UI
 build_property.RootNamespace = UI
-build_property.ProjectDir = D:\Ingenieria Web\UI banco\
+build_property.ProjectDir = C:\Programacion\ProyectosPOLI\ingenieria web\uiBanco\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Ingenieria Web\UI banco
+build_property.MSBuildProjectDirectory = C:\Programacion\ProyectosPOLI\ingenieria web\uiBanco
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Ingenieria Web/UI banco/App.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Ciudad_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Ciudad_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXENpdWRhZF9yZWdpc3Ryby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Cuenta_habiente.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Cuenta_habiente.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXEN1ZW50YV9oYWJpZW50ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Cuenta_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Cuenta_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXEN1ZW50YV9yZWdpc3Ryby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Movimiento_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Movimiento_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXE1vdmltaWVudG9fcmVnaXN0cm8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Prestamo_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Prestamo_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFByZXN0YW1vX3JlZ2lzdHJvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Sucursal_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Sucursal_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFN1Y3Vyc2FsX3JlZ2lzdHJvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Tipo_cuenta_registrar.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Tipo_cuenta_registrar.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFRpcG9fY3VlbnRhX3JlZ2lzdHJhci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Tipo_documento_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Tipo_documento_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFRpcG9fZG9jdW1lbnRvX3JlZ2lzdHJvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Tipo_movimiento_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Tipo_movimiento_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFRpcG9fbW92aW1pZW50b19yZWdpc3Ryby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Tipo_sucursal_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Tipo_sucursal_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFRpcG9fc3VjdXJzYWxfcmVnaXN0cm8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Gestion_Usuario/Titular_registro.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Gestion_Usuario/Titular_registro.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvbl9Vc3VhcmlvXFRpdHVsYXJfcmVnaXN0cm8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/Index.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Shared/SurveyPrompt.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/_Imports.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Shared/MainLayout.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-v226h684v7
 
-[D:/Ingenieria Web/UI banco/Shared/NavMenu.razor]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-h1hcfmdrah
 
-[D:/Ingenieria Web/UI banco/Pages/Error.cshtml]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Ingenieria Web/UI banco/Pages/_Host.cshtml]
+[C:/Programacion/ProyectosPOLI/ingenieria web/uiBanco/Pages/_Host.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

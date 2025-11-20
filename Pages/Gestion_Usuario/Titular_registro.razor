@@ -3,30 +3,33 @@
 @inject HttpClient http
 @using MudBlazor
 @using UI.Data.Usuario
+
 @if (mostrarAlerta)
 {
     <div class="alert alert-success" role="alert">
-        ¡Titular guardado exitosamente!
+        ¡Acción realizada correctamente!
     </div>
 }
+
 <h1>Gestión de Titular</h1>
+
 <div class="accordion" id="accordionEstudiantes">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseEstudiante" aria-expanded="true">
-                Registrar Titular
+                    data-bs-target="#collapseEstudiante" aria-expanded="true">
+                @(titular_registro.id_titular == null ? "Registrar Titular" : "Editar Titular")
             </button>
         </h2>
         <div id="collapseEstudiante" class="accordion-collapse collapse show">
             <div class="accordion-body">
-                <h2 class="text-uppercase text-center mb-5">Registrar Titular</h2>
-                <EditForm Model="@titular_registro" OnValidSubmit="RegistrarTitular">
+
+                <EditForm Model="@titular_registro" OnValidSubmit="GuardarTitular">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
                     <div class="mb-3">
-                        <label>Titular:</label>
+                        <label>Cuenta:</label>
                         <InputSelect @bind-Value="titular_registro.fk_cuenta" class="form-control">
                             <option value="">Seleccione una cuenta</option>
                             @foreach (var cl in cuentaList)
@@ -36,11 +39,10 @@
                         </InputSelect>
                     </div>
 
-
                     <div class="mb-3">
-                        <label>Cuenta habiente:</label>
+                        <label>Cuenta Habiente:</label>
                         <InputSelect @bind-Value="titular_registro.fk_cuenta_habiente" class="form-control">
-                            <option value="">Seleccione una cuenta</option>
+                            <option value="">Seleccione un usuario</option>
                             @foreach (var ul in usuarioList)
                             {
                                 <option value="@ul.id_cuenta_habiente">@ul.documento</option>
@@ -48,75 +50,153 @@
                         </InputSelect>
                     </div>
 
+                    <button type="submit" class="btn btn-primary">
+                        @(titular_registro.id_titular == null ? "Guardar" : "Actualizar")
+                    </button>
 
-
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    @if (titular_registro.id_titular != null)
+                    {
+                        <button class="btn btn-secondary ms-2" @onclick="CancelarEdicion">Cancelar</button>
+                    }
                 </EditForm>
+
             </div>
         </div>
     </div>
 </div>
 
+<hr />
+
+<h3>Lista de Titulares</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cuenta</th>
+            <th>Cuenta Habiente</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var t in titularList)
+        {
+            <tr>
+                <td>@t.id_titular</td>
+                <td>@t.fk_cuenta</td>
+                <td>@t.fk_cuenta_habiente</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" @onclick="(() => EditarTitular(t))">Editar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 @code {
+
     private Titular titular_registro = new();
+    private List<Titular> titularList = new();
+
+    private List<Usuario> usuarioList = new();
+    private List<Cuenta> cuentaList = new();
+
     private bool mostrarAlerta = false;
-
-    private async Task RegistrarTitular()
-    {
-        try
-        {
-            var response = await http.PostAsJsonAsync(
-            "http://localhost:5000/titular",
-            titular_registro
-            );
-
-            if (response.IsSuccessStatusCode)
-            {
-                mostrarAlerta = true;
-                titular_registro = new(); // Limpia formulario
-            }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Excepción: {ex.Message}");
-        }
-    }
 
     protected override async Task OnInitializedAsync()
     {
+        await cargarTitulares();
         await buscarUsuarios();
         await buscarCuenta();
     }
 
-    private List<Usuario> usuarioList = new();
-
-    private async Task buscarUsuarios()
+    // -------------------------------
+    // CARGAR LISTA DE TITULARES
+    // -------------------------------
+    private async Task cargarTitulares()
     {
         try
         {
-            usuarioList = await http.GetFromJsonAsync<List<Usuario>>("http://localhost:5000/user") ?? new();
+            titularList = await http.GetFromJsonAsync<List<Titular>>(
+                "http://localhost:5000/titular/all"
+            ) ?? new();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine($"Excepción: {e.Message}");
+            Console.WriteLine($"Error al cargar titulares: {ex.Message}");
         }
     }
 
-    private List<Cuenta> cuentaList = new();
+
+    // -------------------------------
+    // GUARDAR (CREAR O EDITAR)
+    // -------------------------------
+    private async Task GuardarTitular()
+    {
+        HttpResponseMessage response;
+
+        if (titular_registro.id_titular == null)
+        {
+            // Crear
+            response = await http.PostAsJsonAsync("http://localhost:5000/titular", titular_registro);
+        }
+        else
+        {
+            // Editar
+            response = await http.PutAsJsonAsync("http://localhost:5000/titular", titular_registro);
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            mostrarAlerta = true;
+            await cargarTitulares();
+            titular_registro = new();
+        }
+        else
+        {
+            Console.WriteLine("Error al guardar titular");
+        }
+    }
+
+    // -------------------------------
+    // EDITAR
+    // -------------------------------
+    private void EditarTitular(Titular t)
+    {
+        titular_registro = new Titular
+        {
+            id_titular = t.id_titular,
+            fk_cuenta = t.fk_cuenta,
+            fk_cuenta_habiente = t.fk_cuenta_habiente
+        };
+    }
+
+    // -------------------------------
+    // CANCELAR EDICIÓN
+    // -------------------------------
+    private void CancelarEdicion()
+    {
+        titular_registro = new();
+    }
+
+    // -------------------------------
+    // CARGAR USUARIOS
+    // -------------------------------
+    private async Task buscarUsuarios()
+    {
+        usuarioList = await http.GetFromJsonAsync<List<Usuario>>(
+            "http://localhost:5000/user"
+        ) ?? new();
+    }
+
+    // -------------------------------
+    // CARGAR CUENTAS
+    // -------------------------------
     private async Task buscarCuenta()
     {
-        try
-        {
-            cuentaList = await http.GetFromJsonAsync<List<Cuenta>>("http://localhost:5000/cuenta") ?? new();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error al consusultar nuemero de cuenta: {e.Message}");
-        }
+        cuentaList = await http.GetFromJsonAsync<List<Cuenta>>(
+            "http://localhost:5000/cuenta"
+        ) ?? new();
     }
 }
